@@ -28,6 +28,9 @@ function pr(percent, received, speed)
 	document.getElementById('progress').style.width = percent + '%';
 	document.getElementById('speed').innerHTML = '<b>' + speed + ' KB/s</b>';
 	document.title = percent + '% Downloaded';
+	if(percent == 100){
+		document.getElementById("ddile").innerHTML = '';
+	}
 	return true;
 }
 
