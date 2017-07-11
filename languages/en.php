@@ -310,6 +310,7 @@ $lang[300] = 'Retrieving download page';
 $lang[301] = 'Enter';
 $lang[302] = 'here';
 $lang[303] = 'Download File';
+$lang[694] = 'Stop Download';
 $lang[304] = 'configs/files.lst is not writable, please make sure it is chmod to 777';
 $lang[305] = '&nbsp;is selected as your download path and it is not writable. Please chmod it to 777';
 $lang[306] = 'Merging File';
@@ -401,4 +402,5 @@ $lang[391] = 'CRC32 found in file\'s name is valid';
 $lang[392] = 'CRC32 found in file\'s name (&quot;%1$s&quot;) doesn\'t match calculated CRC32';
 $lang[393] = 'SHA1 Hash';
 $lang[394] = 'Create RAR5 file';
+
 ?>
