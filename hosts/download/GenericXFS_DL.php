@@ -11,26 +11,24 @@ if (!defined('RAPIDLEECH')) {
 }
 
 class GenericXFS_DL extends DownloadClass {
-	protected $page, $cookie, $baseCookie = array('lang' => 'english'), $scheme, $wwwDomain, $domain, $port, $host, $purl, $httpsOnly = false, $sslLogin = false, $cname = 'xfss', $form, $lpass, $fid, $enableDecoders = false, $embedDL = false, $unescaper = false, $customDecoder = false, $reverseForms = true, $cErrsFDL = array(), $DLregexp = '@https?://(?:[\w\-]+\.)+[\w\-]+(?:\:\d+)?/(?:files|dl?|cgi-bin/dl\.cgi)/(?:[^\?\'\"\t<>\r\n\\\]{15,}|v(?:id(?:eo)?)?\.(?:flv|mp4))@i';
-	private $classVer = 18;
+	protected $page, $cookie, $scheme, $wwwDomain, $domain, $port, $host, $purl, $sslLogin, $cname, $form, $lpass, $fid, $enableDecoders = false, $embedDL = false, $unescaper = false, $customDecoder = false, $reverseForms = true, $cErrsFDL = array(), $DLregexp = '@https?://(?:[\w\-]+\.)+[\w\-]+(?:\:\d+)?/(?:files|dl?|cgi-bin/dl\.cgi)/(?:[^\?\'\"\t<>\r\n\\\]{15,}|v(?:id(?:eo)?)?\.(?:flv|mp4))@i';
+	private $classVer = 15;
 	public $pluginVer, $pA;
 
 	public function Download($link) {
 		html_error('[GenericXFS_DL] This plugin can\'t be called directly.');
 	}
 
-	protected function onLoad() {} // Placeholder
-
 	protected function Start($link, $cErrs = array(), $cErrReplace = true) {
-		if ($this->pluginVer > $this->classVer) html_error('GenericXFS_DL class is outdated, please install last version from: https://pastebin.com/e5TZcfQ2 ');
+		if ($this->pluginVer > $this->classVer) html_error('GenericXFS_DL class is outdated, please update it.');
 
-		$this->cookie = $this->baseCookie = empty($this->cookie) ? $this->baseCookie : array_merge($this->cookie, $this->baseCookie);
+		$this->cookie = empty($this->cookie) ? array('lang' => 'english') : array_merge($this->cookie, array('lang' => 'english'));
 		$link = explode('|', str_ireplace('%7C', '|', $link), 2);
 		if (count($link) > 1) $this->lpass = rawurldecode($link[1]);
 		if (!preg_match('@https?://(?:[\w\-]+\.)+[\w\-]+(?:\:\d+)?/(\w{12})(?=(?:[/\.]|(?:\.html?))?)@i', str_ireplace('/embed-', '/', $link[0]), $url)) html_error('Invalid link?.');
 		$this->fid = $url[1];
 		$url = parse_url($url[0]);
-		$url['scheme'] =  ($this->httpsOnly ? 'https' : strtolower($url['scheme']));
+		$url['scheme'] = strtolower($url['scheme']);
 		$url['host'] = strtolower($url['host']);
 
 		if ($this->wwwDomain && strpos($url['host'], 'www.') !== 0) $url['host'] = 'www.' . $url['host'];
@@ -46,11 +44,8 @@ class GenericXFS_DL extends DownloadClass {
 
 		$this->enableDecoders = $this->embedDL || $this->unescaper || $this->customDecoder;
 
-		$this->onLoad();
-
 		if (empty($_POST['step']) || empty($_POST['captcha_type'])) {
 			$this->page = $this->GetPage($this->link, $this->cookie);
-			if ($this->scheme != 'https') is_present($this->page, "\nLocation: https://", '[GenericXFS_DL] Please Set "$this->httpsOnly" to true or add https:// to your link.');
 			if (!empty($cErrs) && is_array($cErrs)) {
 				foreach ($cErrs as $cErr) {
 					if (is_array($cErr)) is_present($this->page, $cErr[0], $cErr[1]);
@@ -165,49 +160,43 @@ class GenericXFS_DL extends DownloadClass {
 		if (($pos = stripos($this->page, $this->scheme . '://' . $this->host . '/captchas/')) !== false && preg_match('@(https?://(?:[\w\-]+\.)+[\w\-]+(?:\:\d+)?)?/captchas/[\w\-]+\.(?:jpe?g|png|gif)@i', substr($this->page, $pos), $gdCaptcha)) {
 			// gd Captcha
 			if (empty($gdCaptcha[1])) $gdCaptcha[0] = $this->scheme . '://' . $this->host . $gdCaptcha[0];
-			$this->captcha = array('type' => 1, 'url' => $gdCaptcha[0]);
+			return array('type' => 1, 'url' => $gdCaptcha[0]);
 		} elseif (substr_count($this->form, "<span style='position:absolute;padding-left:") > 3 && preg_match_all("@<span style='[^\'>]*padding-left\s*:\s*(\d+)[^\'>]*'[^>]*>((?:&#\w+;)|(?:\d))</span>@i", $this->form, $txtCaptcha)) {
 			// Text Captcha (decodeable)
 			$txtCaptcha = array_combine($txtCaptcha[1], $txtCaptcha[2]);
 			ksort($txtCaptcha, SORT_NUMERIC);
 			$txtCaptcha = trim(html_entity_decode(implode($txtCaptcha), ENT_QUOTES, 'UTF-8'));
-			$this->captcha = array('type' => 2, 'key' => $txtCaptcha);
+			return array('type' => 2, 'key' => $txtCaptcha);
 		} elseif ((stripos($this->page, 'google.com/recaptcha/api/') !== false || stripos($this->page, 'recaptcha.net/') !== false) && preg_match('@(?:https?:)?//(?:[\w\-]+\.)?(?:google\.com/recaptcha/api|recaptcha\.net)/(?:challenge|noscript)\?k=([\w\.\-]+)@i', $this->page, $reCaptcha)) {
 			// Old reCAPTCHA
-			$this->captcha = array('type' => 3, 'key' => $reCaptcha[1]);
+			return array('type' => 3, 'key' => $reCaptcha[1]);
 		} elseif (($pos = stripos($this->page, '//api.solvemedia.com/')) !== false && preg_match('@(?:https?:)?//api\.solvemedia\.com/papi/challenge\.(?:no)?script\?k=([\w\.\-]+)@i', substr($this->page, $pos - 5), $smCaptcha)) {
 			// SolveMedia Captcha
-			$this->captcha = array('type' => 4, 'key' => $smCaptcha[1]);
-		} elseif (preg_match('@(?:class|id)=["\']g-recaptcha["\']\s+data-sitekey=["\']([\w\.\-]+)["\']@i', $this->page, $cpid)) {
-			html_error('Unsupported CAPTCHA [reCAPTCHA2]');
+			return array('type' => 4, 'key' => $smCaptcha[1]);
 		}
-		return (!empty($this->captcha));
+		return false;
 	}
 
 	protected function showCaptcha($step) {
-		if (!empty($this->captcha)) {
-			if (!empty($this->cookie[$this->cname])) {
-				$data = $this->DefaultParamArr($this->link, $this->cookie, 1, 1);
-				$data['cookie_encrypted'] = 1;
-			} else {
-				$data = $this->DefaultParamArr($this->link);
-			}
+		if ($captcha = $this->findCaptcha()) {
+			$data = $this->DefaultParamArr($this->link, (empty($this->cookie[$this->cname])) ? 0 : encrypt(CookiesToStr($this->cookie)));
 			if (!empty($this->post)) foreach ($this->post as $k => $v) $data["T8gXFS[$k]"] = $v;
 			$data['step'] = $step;
-			$data['captcha_type'] = $this->captcha['type'];
-			switch ($this->captcha['type']) {
+			$data['captcha_type'] = $captcha['type'];
+			switch ($captcha['type']) {
 				default: return html_error('Unknown captcha type.');
 				case 1:
-					list($headers, $imgBody) = explode("\r\n\r\n", $this->GetPage($this->captcha['url']), 2);
+					list($headers, $imgBody) = explode("\r\n\r\n", $this->GetPage($captcha['url']), 2);
 					if (substr($headers, 9, 3) != '200') html_error('[1] Error downloading CAPTCHA img.');
 					$mimetype = (preg_match('@image/[\w+]+@', $headers, $mimetype) ? $mimetype[0] : 'image/jpg');
 					return $this->EnterCaptcha("data:$mimetype;base64,".base64_encode($imgBody), $data);
 				case 2:
-					$this->post['code'] = $this->captcha['key'];
+					$this->captcha = 2;
+					$this->post['code'] = $captcha['key'];
 					// postCaptcha won't be needed on this case.
 					return true;
-				case 3: return $this->reCAPTCHA($this->captcha['key'], $data);
-				case 4: return $this->SolveMedia($this->captcha['key'], $data);
+				case 3: return $this->reCAPTCHA($captcha['key'], $data);
+				case 4: return $this->SolveMedia($captcha['key'], $data);
 			}
 		}
 		return false;
@@ -215,24 +204,29 @@ class GenericXFS_DL extends DownloadClass {
 
 	protected function postCaptcha(&$step) {
 		if (empty($_POST['step']) || empty($_POST['captcha_type'])) return false;
+		if (!empty($_POST['cookie'])) {
+			$this->cookie = StrToCookies(decrypt(urldecode($_POST['cookie'])));
+			$this->cookie['lang'] = 'english';
+			$_POST['cookie'] = false;
+		}
 		$post = (!empty($_POST['T8gXFS']) && is_array($_POST['T8gXFS']) ? array_map('urlencode', $_POST['T8gXFS']) : array());
 		switch ($_POST['captcha_type']) {
 			default: 
 				return html_error('Invalid captcha type.');
 			case '1': // Image (gd) Captcha
-				$this->captcha = array('type' => 1);
+				$this->captcha = 1;
 				if (empty($_POST['captcha'])) html_error('[1] You didn\'t enter the image verification code.');
 				$post['code'] = urlencode($_POST['captcha']);
 				break;
 			case '3': // Old reCAPTCHA
-				$this->captcha = array('type' => 3);
+				$this->captcha = 3;
 				if (empty($_POST['recaptcha_response_field'])) html_error('[3] You didn\'t enter the image verification code.');
 				if (empty($_POST['recaptcha_challenge_field'])) html_error('[3] Empty reCAPTCHA challenge.');
 				$post['recaptcha_challenge_field'] = urlencode($_POST['recaptcha_challenge_field']);
 				$post['recaptcha_response_field'] = urlencode($_POST['recaptcha_response_field']);
 				break;
 			case '4': // Solvemedia
-				$this->captcha = array('type' => 4);
+				$this->captcha = 4;
 				$post = array_merge($post, $this->verifySolveMedia());
 				break;
 		}
@@ -256,13 +250,13 @@ class GenericXFS_DL extends DownloadClass {
 	protected function checkCaptcha($step) {
 		if (preg_match('@>\s*Wrong captcha\s*<@i', $this->page)) {
 			if (empty($this->captcha)) html_error("Error: Unknown captcha. [$step]");
-			else if ($this->captcha['type'] == 2) html_error("Error: Error Decoding Captcha. [$step]");
+			else if ($this->captcha == '2') html_error("Error: Error Decoding Captcha. [$step]");
 			else html_error("Error: Wrong Captcha Entered. [$step]");
 		}
 	}
 
 	protected function FreeDL($step = 1) {
-		if (!$this->postCaptcha($step) && $step == 1 && !empty($this->cookie[$this->cname])) {
+		if (!$this->postCaptcha($step) && $step == 1 && !empty($this->cookie[(!empty($this->cname) ? $this->cname : 'xfss')])) {
 			// Member DL: We need to reload the page with the user's cookies.
 			$this->page = $this->GetPage($this->link, $this->cookie);
 			$this->cookie = GetCookiesArr($this->page, $this->cookie);
@@ -298,7 +292,6 @@ class GenericXFS_DL extends DownloadClass {
 		}
 		if ($step > $fstep) html_error("Loop Detected [$fstep]");
 		is_present($this->page, '>Expired session<', "Error: Expired Download Session. [$fstep]");
-		$this->findCaptcha();
 		$this->findCountdown();
 		$this->showCaptcha($fstep);
 		$this->page = $this->GetPage($this->link, $this->cookie, array_map('urlencode', $this->post));
@@ -334,45 +327,30 @@ class GenericXFS_DL extends DownloadClass {
 	protected function Login() {
 		$this->pA = (empty($_REQUEST['premium_user']) || empty($_REQUEST['premium_pass']) ? false : true);
 		$pkey = str_ireplace(array('www.', '.'), array('', '_'), $this->domain);
-		if (empty($_POST['cookie']) && ($_REQUEST['premium_acc'] != 'on' || (!$this->pA && (empty($GLOBALS['premium_acc'][$pkey]['user']) || empty($GLOBALS['premium_acc'][$pkey]['pass'])) && empty($GLOBALS['premium_acc'][$pkey]['cookie'])))) return $this->FreeDL();
-
-		if (!empty($_POST['cookie']) || !empty($GLOBALS['premium_acc'][$pkey]['cookie'])) {
-			if (!empty($_POST['cookie'])) {
-				if (!empty($_POST['cookie_encrypted'])) {
-					$_POST['cookie'] = decrypt(urldecode($_POST['cookie']));
-					unset($_POST['cookie_encrypted']);
-				}
-				$this->cookie = StrToCookies($_POST['cookie']);
-				$_POST['cookie'] = false;
-			} else {
-				$cookie = $GLOBALS['premium_acc'][$pkey]['cookie'];
-				$this->cookie = (is_array($cookie) ? $cookie : StrToCookies($cookie));
-			}
-		} else {
-			$user = ($this->pA ? $_REQUEST['premium_user'] : $GLOBALS['premium_acc'][$pkey]['user']);
-			$pass = ($this->pA ? $_REQUEST['premium_pass'] : $GLOBALS['premium_acc'][$pkey]['pass']);
-			if ($this->pA && !empty($_POST['pA_encrypted'])) {
-				$user = decrypt(urldecode($user));
-				$pass = decrypt(urldecode($pass));
-				unset($_POST['pA_encrypted']);
-			}
-
-			if (empty($user) || empty($pass)) html_error('Login Failed: User or Password is empty. Please check login data.');
-			$post = array();
-			$post['op'] = 'login';
-			$post['redirect'] = '';
-			$post['login'] = urlencode($user);
-			$post['password'] = urlencode($pass);
-
-			$page = $this->sendLogin($post);
-			if (empty($this->sslLogin) && $this->scheme != 'https') is_present($page, "\nLocation: https://", '[GenericXFS_DL] Please Set "$this->sslLogin" to true.');
-
-			if (!$this->checkLogin($page)) html_error('Login Error: checkLogin() returned false.');
-			$this->cookie = GetCookiesArr($page);
+		if (($_REQUEST['premium_acc'] != 'on' || (!$this->pA && (empty($GLOBALS['premium_acc'][$pkey]['user']) || empty($GLOBALS['premium_acc'][$pkey]['pass']))))) return $this->FreeDL();
+	
+		$user = ($this->pA ? $_REQUEST['premium_user'] : $GLOBALS['premium_acc'][$pkey]['user']);
+		$pass = ($this->pA ? $_REQUEST['premium_pass'] : $GLOBALS['premium_acc'][$pkey]['pass']);
+		if ($this->pA && !empty($_POST['pA_encrypted'])) {
+			$user = decrypt(urldecode($user));
+			$pass = decrypt(urldecode($pass));
+			unset($_POST['pA_encrypted']);
 		}
 
-		if (empty($this->cookie[$this->cname])) html_error('Login Error: Cannot find session cookie.');
-		$this->cookie = array_merge($this->cookie, $this->baseCookie);
+		if (empty($user) || empty($pass)) html_error('Login Failed: User or Password is empty. Please check login data.');
+		$post = array();
+		$post['op'] = 'login';
+		$post['redirect'] = '';
+		$post['login'] = urlencode($user);
+		$post['password'] = urlencode($pass);
+
+		$page = $this->sendLogin($post);
+
+		if (!$this->checkLogin($page)) html_error('Login Error: checkLogin() returned false.');
+
+		$this->cookie = GetCookiesArr($page);
+		if (empty($this->cookie[(!empty($this->cname) ? $this->cname : 'xfss')])) html_error('Login Error: Cannot find session cookie.');
+		$this->cookie['lang'] = 'english';
 
 		$page = $this->isLoggedIn();
 		if (!$page) html_error('Login Error: isLoggedIn() returned false.');
@@ -386,7 +364,7 @@ class GenericXFS_DL extends DownloadClass {
 	protected function checkLogin($page) {
 		is_present($page, 'op=resend_activation', 'Login failed: Your account isn\'t confirmed yet.');
 		is_present($page, 'Your account was banned by administrator.', 'Login failed: Account is Banned.');
-		is_present($page, 'Your IP is banned', 'Login Error: IP banned temporally for too many wrong logins.');
+		is_present($page, 'Your IP is banned', 'Login Error: IP banned for too many wrong logins.');
 		if (preg_match('@Incorrect (Username|Login) or Password@i', $page)) html_error('Login failed: User/Password incorrect.');
 		return true;
 	}
@@ -419,3 +397,5 @@ class GenericXFS_DL extends DownloadClass {
 
 // GenericXFS_DL (alpha)
 // Written by Th3-822.
+
+?>
