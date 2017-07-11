@@ -360,7 +360,13 @@ function geturl($host, $port, $url, $referer = 0, $cookie = 0, $post = 0, $saveT
 			//$scriptStarted = true;
 			flush();
 		}
-
+		echo'
+		<div id="ddile">
+		<form method="post" action="'.$PHP_SELF.'">
+		<input type="hidden" id="dile" name="dile" value="'.base64_encode($saveToFile).'" />
+		<input type="submit" value="'.lang(694).'" />
+		</form>
+		</div>';
 		$time = $last = $lastChunkTime = 0;
 		do {
 			$data = @fread($fp, $chunkSize);

