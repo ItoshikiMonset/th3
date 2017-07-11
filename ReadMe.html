@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>RapidLeech Readme :: Install &amp; Basic Configuration</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.4  (Linux)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGED" CONTENT="20090206;17380500">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 21cm 29.7cm }
+.style3 {
+	font-size: 14px;
+	font-weight: bold;
+}
+.style4 {font-size: 24px}
+.style5 {
+	font-size: 24px;
+	font-weight: bold;
+	color: #333333;
+}
+.style6 {
+	color: #330066;
+	font-weight: bold;
+}
+.style7 {color: #330066}
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-IN" BGCOLOR="#5398b5" DIR="LTR" link="#0000e7" vlink="#800080" alink="#FF0000">
+<CENTER>
+	<TABLE WIDTH=95% BORDER=0 CELLPADDING=0 CELLSPACING=0 STYLE="page-break-before: always">
+		<COL WIDTH=256*>
+		<TR>
+		  <TD>&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+		  <TD><div align="left"></div></TD>
+	  </TR>
+		<TR>
+		  <TD>&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+		  
+		  <TD><a href="http://rapidleech.host" TARGET="_blank"><IMG SRC="http://rapidleech.host/wp-content/themes/emily/images/logo.png"></a><br><br>
+		  <div align="left" class="style5">RapidLeech Readme </div></TD>
+	  </TR>
+		<TR>
+		  <TD>&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+		  <TD><div align="left"></div></TD>
+	  </TR>
+		<TR>
+			<TD WIDTH=5%>&nbsp;</TD>
+		    <TD WIDTH=2%>&nbsp;</TD>
+		    <TD WIDTH=93%><P align="left"><STRONG><FONT COLOR="#004080"> Hello and thank you for choosing </STRONG><a href="http://rapidleech.host" TARGET="_blank">RapidLeech.host</a></FONT><br><br>
+			 <P align="left" class="style3">To install the script, please follow the steps 1-4</P>
+            </TD>
+		</TR>
+		<TR>
+		  <TD>&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+		  <TD><div align="left"></div></TD>
+	  </TR>
+		<TR>
+		  <TD valign="top"><div align="right">1.&nbsp;</div></TD>
+		  <TD>&nbsp;</TD>
+		  <TD> <div align="left">To install, simply upload and unzip the file rapidleech.zip in the following folder of your cPanel account:
+		  <P align="left">/home/YOUR_CPANEL_USERNAME/public_html/</P>
+		  </div></TD>
+	  </TR>
+		<TR>
+		  <TD valign="top">&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+	  </TR>
+		<TR>
+		  <TD valign="top"><div align="right">2.&nbsp;</div></TD>
+		  <TD>&nbsp;</TD>
+		  <TD> <div align="left">Then check that the following files have permissions 0744:
+		  <P align="left">/home/YOUR_CPANEL_USERNAME/public_html/rar/rar</P>
+		  <P align="left">/home/YOUR_CPANEL_USERNAME/public_html/rar/unrar</P>
+		  </div></TD>
+	  </TR>
+		<TR>
+		  <TD valign="top">&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+		  <TD><div align="left"></div></TD>
+	  </TR>
+		<TR>
+		  <TD valign="top"><div align="right">3.&nbsp;</div></TD>
+		  <TD>&nbsp;</TD>
+		  <TD><div align="left">The following folder permissions 0777:
+		    <P align="left">/home/YOUR_CPANEL_USERNAME/public_html/mtn/</P>
+			</div></TD>
+	  </TR>
+		<TR>
+		  <TD valign="top">&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+		  <TD><div align="left"></div></TD>
+	  </TR>
+		<TR>
+		  <TD valign="top"><div align="right">4.&nbsp;</div></TD>
+		  <TD>&nbsp;</TD>
+		  <TD><P align="left">And the following file permissions 0777:</P>
+		  <P align="left">/home/YOUR_CPANEL_USERNAME/public_html/mtn/mtn</P><BR>
+		    <P align="left"><b>Default login details:</b><BR>
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</P>
+		    <P align="left">User: rapidleech<BR>
+			Pass: host</P>
+			<P align="left">To change default login details edit file:</P>
+		    <P align="left">/home/YOUR_CPANEL_USERNAME/public_html/configs/config.php<BR><BR>
+			Search:</P>
+			<P align="left">'users' =><BR>
+			&nbsp;&nbsp;array (<BR>
+			&nbsp;&nbsp;&nbsp;&nbsp;'rapidleech' => 'host',<BR>
+			&nbsp;&nbsp;),<BR><BR>
+			Edit and save changes.</P>
+	     </TD>
+	  
+		
+		<TR>
+		  <TD valign="top"><div align="right">&nbsp;</div></TD>
+		   <TD>&nbsp;</TD>
+		  <TD>
+		     <P align="left">&nbsp; </P>
+		    <P align="left"><b>Premium Accounts:</b><BR>
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</P>
+		    <P ALIGN=left>To be able to use your own premium accounts, edit file:</P>
+			<P ALIGN=left>/home/YOUR_CPANEL_USERNAME/public_html/configs/accounts.php<BR><BR>
+			Delete the comment '//' at the beginning of the line, then replaces 'your username' and 'your password' with your login details, e.g.<BR><BR>
+			$premium_acc["uploaded_net"] = array('user' => '8746532', 'pass' => 'k9o0y4d6');<BR><BR>
+			Only edit each file server settings you need to use and saves changes.</P>
+		   
+		    
+	  </TR>
+	  				
+		<TR>
+		  <TD valign="top"><div align="right">&nbsp;</div></TD>
+		   <TD>&nbsp;</TD>
+		  <TD>
+		     <P align="left">&nbsp; </P>
+		    <P align="left"><b>Prohibited Files:</b><BR>
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</P>
+				    <P ALIGN=left>To be able to work with prohibited files (required for PC Uploader, Movie Thumbnailer, Video Player), edit file:</P>
+			<P ALIGN=left>/home/YOUR_CPANEL_USERNAME/public_html/.htaccess<BR><BR>
+			Search:</P>
+			<P ALIGN=left>&#60;files ~ "\.(?i:s?php.*|cgi|p[ly]|sh|asp|[dsp]?html?)$"&#62;<BR>
+			deny from all<BR>
+			allow from 91.15.171.199<BR>
+			&#60;/files&#62;<BR><BR>
+			Replace with your IP address, e.g.</P>
+			<P ALIGN=left>&#60;files ~ "\.(?i:s?php.*|cgi|p[ly]|sh|asp|[dsp]?html?)$"&#62;<BR>
+			deny from all<BR>
+			allow from 65.154.58.124<BR>
+			&#60;/files&#62;<BR><BR>
+			Edit and save changes. If you do not know your IP address:<BR><BR>
+			<a href="http://whatismyipaddress.com" TARGET="_blank">CLICK HERE</a> </P>
+
+	  </TR>
+	  
+		
+		<TR>
+		  <TD WIDTH=5%>&nbsp;</TD>
+		  <TD>&nbsp;</TD>
+		  <TD><P align="left">&nbsp;</P>
+		    <P align="left"><BR>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</P>
+		    <H1 align="left" class="style4" LANG="en-US">DISCLAIMER</H1>
+		    <P align="left" STYLE="text-decoration: none">&nbsp; </P>
+		    <P align="left"><SPAN STYLE="text-decoration: none"><B>By downloading and/or installing this script you accept all responsibility and liability without exception for all content displayed on the domain that<BR>
+			  uses this script, and you accept all the </B></SPAN><A HREF="http://rapidleech.host/policies/terms-and-conditions/" TARGET="_blank">Terms and Conditions</A><SPAN STYLE="text-decoration: none"><B> of use without exception as given at our website </B></SPAN><A HREF="http://www.rapidleech.host" TARGET="_blank">RapidLeech.host</A></P>
+		    <P align="left" STYLE="text-decoration: none">&nbsp; </P>
+		    <P align="left" STYLE="text-decoration: none">You may create as many engines as you
+		      wish on a single domain. </P>
+		    <P align="left">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</P><BR>
+		    <P align="left">Thanks and Best Regards,</P>
+		    <P align="left">RapidLeech Staff </P>
+	      <P align="left">support@rapidleech.host</P></TD>
+	  </TR>
+		<TR>
+			<TD colspan="3">
+				<P>&nbsp;</P>			</TD>
+		</TR>
+		<TR>
+			<TD colspan="3">
+				<P>&nbsp;</P>			</TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>
