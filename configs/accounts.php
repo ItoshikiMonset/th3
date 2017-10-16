@@ -12,7 +12,7 @@ $premium_acc = array();
 $premium_acc["mega_co_nz"] = array('user' => 'imprashast@gmail.com', 'pass' => 'windowsx');
 $premium_acc["userscloud_com"] = array('user' => 'susutun', 'pass' => '394277@usercloud!@#$%');
 $premium_acc["sammobile_com"] = array('user' => 'susutun', 'pass' => '095112233sam123');
-$premium_acc['uptobox_com'] = array('user' => 'kokar', 'pass' => 'kokar123');
+$premium_acc['uptobox_com'] = array('user' => 'eikhaing', 'pass' => 'K@nainG2050');
 $premium_acc["my_pcloud_com"] = array('user' => 'eieikhaing.cn@gmail.com', 'pass' => 'K@nainG2050');
 $premium_acc["rapidgator_net"] = array('user' => 'aungminhan123@gmail.com', 'pass' => 'aungminhan1993');
 $premium_acc["samsung-firmware_org"] = array('user' => 'susutun', 'pass' => 'samsung-firmware.org');
