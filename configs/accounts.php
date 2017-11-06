@@ -14,7 +14,8 @@ $premium_acc["userscloud_com"] = array('user' => 'susutun', 'pass' => '394277@us
 $premium_acc["sammobile_com"] = array('user' => 'susutun', 'pass' => '095112233sam123');
 $premium_acc['uptobox_com'] = array('user' => 'eikhaing', 'pass' => 'K@nainG2050');
 $premium_acc["my_pcloud_com"] = array('user' => 'eieikhaing.cn@gmail.com', 'pass' => 'K@nainG2050');
-$premium_acc["rapidgator_net"] = array('user' => 'aungminhan123@gmail.com', 'pass' => 'aungminhan1993');
+//$premium_acc["rapidgator_net"] = array('user' => 'aungminhan123@gmail.com', 'pass' => 'aungminhan1993');
+$premium_acc["rapidgator_net"] = array('user' => 'kokokar982@gmail.com', 'pass' => 'kokar123');
 $premium_acc["samsung-firmware_org"] = array('user' => 'susutun', 'pass' => 'samsung-firmware.org');
 $premium_acc["4shared_com"] = array('user' => 'susutunum2@gmail.com', 'pass' => '394277');
 //$premium_acc["openload_co"] = array('user' => 'susutunum2@gmail.com', 'pass' => 'openload.iosusutun');
