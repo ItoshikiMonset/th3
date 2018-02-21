@@ -1,6 +1,6 @@
 <?php
 $upload_services[]="mediafire.com_member";
-$max_file_size["mediafire.com_member"]=200;
+$max_file_size["mediafire.com_member"]=false;
 $page_upload["mediafire.com_member"] = "mediafire.com_member.php";
 
 /******************mediafire.com****************************\
