@@ -13,6 +13,10 @@ allow from all
 #allow from all
 #</files>
 
+<files google.php>
+allow from all
+</files>
+
 <files ~ "^deny.php">
 allow from all
 </files>
