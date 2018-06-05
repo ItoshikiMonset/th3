@@ -4,7 +4,9 @@
  *  Plugin Name: Google Drive Upload Plugin
  *  Written By: FastRapidLeech.Com
  *  Date : 07-April-2018
+ *  Update : Bug Fixed. [08-April-2018]
  */
+
 
 global $options;
 $pname = 'google_drive_upload_setting.php' ;
@@ -38,7 +40,7 @@ function make_public($url, $token, $fid) {
     $cp = $_SERVER['PHP_SELF']; 
     $pi = pathinfo($cp); 
     $hn = $_SERVER['HTTP_HOST']; 
-    $pl = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
+    $pl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https" : "http";
     $fw =  $pl.'://'.$hn.$pi['dirname']."/";
     return $fw;
 	}
@@ -1435,7 +1437,9 @@ else                           return 'application/octet-stream';
  *  Plugin Name: Google Drive Upload Plugin
  *  Written By: FastRapidLeech.Com
  *  Date : 07-April-2018
+ *  Update : Bug Fixed. [08-April-2018]
  */
+
 
 ?>
 
